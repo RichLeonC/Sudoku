@@ -1,4 +1,0 @@
-
-
-resuelva(Solucion):-
-    
