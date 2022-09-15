@@ -1,4 +1,4 @@
-% version para el 4x4
+% Problema 1, Sudoku, version para el 4x4 -- Richard Osvaldo Leon Chinchilla 2019003759
 
 vocabulario([a,b,c,d]).
 val(1,2,a).
@@ -27,17 +27,6 @@ imprimir(Elemento1, Elemento2, Elemento3, Elemento4) :-
    write(' |'),
    nl. %Salto de linea
 
-%Predicado principal que es llamado en la consola.
-resuelva(Solucion):-
-   %Se pasa el sudoku a resolver
-   resolver(
-      %1 %2 %3 %4
-      _, a, _, _, %1
-      _, _, a, _, %2
-      _, c, _, _, %3
-      _, _, d, _  %4
-      
-      ).
 
 %Predicado que se encarga de resolver e imprimir el sudoku pasado por parametro
 resolver(F1C1,F1C2,F1C3,F1C4,F2C1,F2C2,F2C3,F2C4,F3C1,F3C2,F3C3,F3C4,F4C1,F4C2,F4C3,F4C4) :- 
@@ -84,5 +73,15 @@ solucion(F1C1,F1C2,F1C3,F1C4,F2C1,F2C2,F2C3,F2C4,F3C1,F3C2,F3C3,F3C4,F4C1,F4C2,F
    %Cuarto cuadrante inferior derecho
 	esDistinto(F3C3, F3C4, F4C3, F4C4). 
 
-
+%Predicado principal que es llamado en la consola.
+resuelva(Solucion):-
+   %Se pasa el sudoku a resolver
+   resolver(
+      %1 %2 %3 %4
+      _, a, _, _, %1
+      _, _, a, _, %2
+      _, c, _, _, %3
+      _, _, d, _  %4
+      
+      ).
 
