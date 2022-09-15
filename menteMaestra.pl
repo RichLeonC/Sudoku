@@ -42,17 +42,17 @@ restablecer:-
 
 /*Los siguientes se encargan de crear todo lo que se necesita para comparar un numero con otro
   y decir los asertados en valor y los asertados en valor y posicion*/
-genasertados:-
+creaAsertados:-
     assert(asertados(0)).
 eliasertados:-
   (retract(asertados(_)) , eliasertados;!).
-genparciales:-
+creaParciales:-
   assert(parciales(0)).
 eliparciales:-
   (retract(parciales(_)) , eliparciales;!).
 buenosparciales:-
-  eliasertados,genasertados,
-  eliparciales,genparciales.
+  eliasertados,creaAsertados,
+  eliparciales,creaParciales.
 
 /*Aumenta la cantidad de numeros de igual valor y posicion*/
 incrementarAsertados:-
@@ -101,25 +101,27 @@ revisa([A,B,C,D],[A,B,C,D],_,_):-
     write('Ese numero es correcto.'),nl,nl,rondas(R),write('Total de rondas en adivinarlo: '),write(R),nl.
 
 /*De todas la anteriores esta es la que se encarga de llamarlas*/
-revisa([A,B,C,D],[E,F,G,H],Buenos,Regulares):-
+revisa([X1,B,C,D],[E,F,G,H],Asertados,Parciales):-
     buenosparciales,
-    Pro = [],
-    Cor = [],
-    (A == E, A,Pro1 = Pro, Cor1 = Cor; 
-    append([A],Pro,Pro1), append([E],Cor,Cor1)),
-    (B == F, A,Pro2 = Pro1, Cor2 = Cor1; 
-    append([B],Pro1,Pro2), append([F],Cor1,Cor2)),
-    (C == G, A,Pro3 = Pro2, Cor3 = Cor2; 
-    append([C],Pro2,Pro3), append([G],Cor2,Cor3)),
-    (D == H, A,Pro4 = Pro3, Cor4 = Cor3; 
-    append([D],Pro3,Pro4), append([H],Cor3,Cor4)),
-    revisaValor(Pro4,Cor4),
-    asertados(Buenos),
-    parciales(Regulares),
-    write('Cantidad correctos: '),write(Buenos),nl,
+    Err = [],
+    Aser = [],
+    (X1 == E, X1,Err1 = Err, Aser1 = Aser; 
+    append([X1],Err,Err1), append([E],Aser,Aser1)),
+    (B == F, X1,Err2 = Err1, Aser2 = Aser1; 
+    append([B],Err1,Err2), append([F],Aser1,Aser2)),
+    (C == G, X1,Err3 = Err2, Aser3 = Aser2; 
+    append([C],Err2,Err3), append([G],Aser2,Aser3)),
+    (D == H, X1,Err4 = Err3, Aser4 = Aser3; 
+    append([D],Err3,Err4), append([H],Aser3,Aser4)),
+    revisaValor(Err4,Aser4),
+    asertados(Asertados),
+    parciales(Parciales),
+    write('Cantidad correctos: '),
+    write(Asertados),nl,
     write('Cantidad correctos pero en diferente posicion: '),
-    write(Regulares),nl,nl,
-    incrementarRondas,jAdivina. /*POR AHORA VOY A incrementar LAS RONDAS AQUI*/
+    write(Parciales),nl,nl,
+    incrementarRondas,
+    jAdivina. 
 
 /*Lista con los numeros permitidos para la secuencia de 4 numeros*/
 numeros0_9(['1','2','3','4','5','6','7','8','9','0']).
@@ -144,7 +146,7 @@ jAdivina:-
     rondas(NumRondas),
     write('Ronda: '),write(NumRondas),nl,
     write('Digite la combinacion correcta'),
-    path_file('Propuesta.pl',Path),
+    path_file('tempPVC.pl',Path),
     leerNumero(N1,N2,N3,N4),
     tell(Path),
     write('propuesto('),write([N1,N2,N3,N4]),write(').'),
@@ -163,9 +165,11 @@ jugar:-
     write('Ingrese su nombre'),nl,
     read_string(user_input, "\n", "\r", _, X),
     restablecer,
-    nl,write('Adivina la secuencia secreta de la maquina'),nl,jAdivina,
+    nl,write('Adivina la secuencia secreta de la maquina'),
+    nl,
+    jAdivina,
    rondas(RS), 
-    nl, write('Rondas que tardo el usuario para adivinar: '), write(RS), nl,
+    nl, write('Rondas que tardo el usuario para adivinar: '), write(RS), nl.
 
 /*Funciones de append para caso especial*/
 my_append([],[],[]).

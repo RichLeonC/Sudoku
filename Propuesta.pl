@@ -1,1 +1,1 @@
-propuesto([0,9,4,2]).
+propuesto([9,9,9,9]).
